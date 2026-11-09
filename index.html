@@ -1,0 +1,2402 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="description" content="گزارش تصمیمات جلسه توسعه پلتفرم هوشمند املاک پازل - Puzzle × CodePacks">
+    <meta name="robots" content="noindex, nofollow">
+    <title>گزارش تصمیمات جلسه | توسعه پلتفرم هوشمند املاک پازل | Code Packs</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* ============================================================
+           DESIGN TOKENS
+           ============================================================ */
+        :root {
+            /* Colors */
+            --bg: #f4f7fb;
+            --primary: #2563eb;
+            --primary-light: #eff4ff;
+            --primary-dark: #1a4fcf;
+            --dark: #0f172a;
+            --dark-secondary: #1e293b;
+            --accent: #14b8a6;
+            --accent-light: #e6faf7;
+            --success: #16a34a;
+            --success-light: #edf9f1;
+            --warning: #f59e0b;
+            --warning-light: #fffbea;
+            --warning-dark: #b45309;
+            --purple: #7c3aed;
+            --purple-light: #f5f0ff;
+            --pink: #db2777;
+            --pink-light: #fdf2f8;
+            --border: #e5e7eb;
+            --border-light: #f1f4f8;
+            --white: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-tertiary: #94a3b8;
+
+            /* Fluid Typography */
+            --text-xs: clamp(0.7rem, 0.65rem + 0.2vw, 0.75rem);
+            --text-sm: clamp(0.8rem, 0.75rem + 0.25vw, 0.875rem);
+            --text-base: clamp(0.875rem, 0.82rem + 0.3vw, 1rem);
+            --text-md: clamp(0.95rem, 0.88rem + 0.35vw, 1.0625rem);
+            --text-lg: clamp(1rem, 0.92rem + 0.45vw, 1.125rem);
+            --text-xl: clamp(1.125rem, 1rem + 0.6vw, 1.25rem);
+            --text-2xl: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);
+            --text-3xl: clamp(1.5rem, 1.2rem + 1.5vw, 2rem);
+
+            /* Spacing (4/8 system) */
+            --s-1: 4px;
+            --s-2: 8px;
+            --s-3: 12px;
+            --s-4: 16px;
+            --s-5: 20px;
+            --s-6: 24px;
+            --s-8: 32px;
+            --s-10: 40px;
+            --s-12: 48px;
+
+            /* Radii */
+            --r-xs: 8px;
+            --r-sm: 12px;
+            --r-md: 16px;
+            --r-lg: 20px;
+            --r-xl: 24px;
+            --r-pill: 999px;
+
+            /* Shadows */
+            --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
+            --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.05);
+            --shadow-md: 0 6px 20px rgba(15, 23, 42, 0.07);
+            --shadow-lg: 0 16px 40px rgba(15, 23, 42, 0.09);
+            --shadow-xl: 0 24px 56px rgba(15, 23, 42, 0.12);
+
+            /* Motion */
+            --ease: cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+            --t-fast: 0.15s var(--ease);
+            --t: 0.3s var(--ease);
+            --t-slow: 0.6s var(--ease-out);
+
+            /* Layout */
+            --font: 'Vazirmatn', system-ui, -apple-system, sans-serif;
+            --max-w: 1120px;
+            --header-h: 56px;
+        }
+
+        @media (min-width: 768px) {
+            :root { --header-h: 64px; }
+        }
+
+        /* ============================================================
+           RESET & BASE
+           ============================================================ */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: calc(var(--header-h) + 16px);
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.75;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image:
+                radial-gradient(ellipse at 15% 5%, rgba(37, 99, 235, 0.04) 0%, transparent 55%),
+                radial-gradient(ellipse at 85% 90%, rgba(20, 184, 166, 0.04) 0%, transparent 55%);
+            background-attachment: fixed;
+            -webkit-tap-highlight-color: rgba(37, 99, 235, 0.1);
+        }
+
+        body.nav-open { overflow: hidden; }
+
+        img, svg { display: block; max-width: 100%; }
+        button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+        a { color: inherit; text-decoration: none; }
+        ul, ol { list-style: none; }
+
+        ::selection { background: rgba(37, 99, 235, 0.15); color: var(--primary-dark); }
+
+        :focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
+        /* ============================================================
+           SCROLL PROGRESS
+           ============================================================ */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--primary));
+            z-index: 2000;
+            width: 0%;
+            transition: width 0.1s linear;
+            border-radius: 0 0 4px 0;
+        }
+
+        /* ============================================================
+           PRINT BAR (Sticky Header) — Mobile First
+           ============================================================ */
+        .print-bar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid var(--border);
+            padding: 10px 14px;
+            padding-top: max(10px, env(safe-area-inset-top));
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            min-height: var(--header-h);
+        }
+
+        .print-bar__brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            font-size: var(--text-sm);
+            color: var(--dark);
+            white-space: nowrap;
+            min-width: 0;
+        }
+
+        .print-bar__brand-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            flex-shrink: 0;
+            box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15);
+            animation: dotPulse 2.5s ease-in-out infinite;
+        }
+
+        @keyframes dotPulse {
+            0%, 100% { box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15); }
+            50% { box-shadow: 0 0 0 8px rgba(22, 163, 74, 0.02); }
+        }
+
+        .print-bar__brand-text { display: none; }
+        .print-bar__brand-sep { display: none; color: var(--text-tertiary); font-weight: 400; }
+        .print-bar__brand-label { display: none; }
+
+        .print-bar__actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .btn {
+            font-family: var(--font);
+            font-weight: 600;
+            font-size: var(--text-sm);
+            padding: 8px 12px;
+            border-radius: var(--r-sm);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: var(--t-fast);
+            white-space: nowrap;
+            min-height: 40px;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .btn svg {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+        }
+
+        .btn__label { display: none; }
+
+        .btn--primary {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+        }
+
+        .btn--primary:hover {
+            background: var(--primary-dark);
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+        }
+
+        .btn--primary:active { transform: scale(0.97); }
+
+        .btn--outline {
+            background: var(--white);
+            color: var(--dark);
+            border: 1.5px solid var(--border);
+        }
+
+        .btn--outline:hover {
+            border-color: #cbd5e1;
+            background: #fafbfc;
+        }
+
+        .btn--outline:active { transform: scale(0.97); }
+
+        /* Desktop print bar */
+        @media (min-width: 640px) {
+            .print-bar { padding: 12px 24px; }
+            .print-bar__brand { font-size: var(--text-base); gap: 10px; }
+            .print-bar__brand-dot { width: 10px; height: 10px; }
+            .print-bar__brand-text { display: inline; }
+            .print-bar__brand-sep { display: inline; }
+            .print-bar__brand-label { display: inline; }
+            .print-bar__actions { gap: 10px; }
+            .btn { padding: 10px 18px; min-height: 44px; font-size: var(--text-sm); }
+            .btn__label { display: inline; }
+        }
+
+        /* ============================================================
+           MAIN CONTAINER
+           ============================================================ */
+        .main-container {
+            max-width: var(--max-w);
+            margin: 0 auto;
+            padding: var(--s-4) var(--s-3) var(--s-12);
+            padding-left: max(var(--s-3), env(safe-area-inset-left));
+            padding-right: max(var(--s-3), env(safe-area-inset-right));
+        }
+
+        @media (min-width: 640px) {
+            .main-container { padding: var(--s-6) var(--s-6) var(--s-12); }
+        }
+
+        @media (min-width: 1024px) {
+            .main-container { padding: var(--s-8) var(--s-6) var(--s-16, 64px); }
+        }
+
+        /* ============================================================
+           STATUS BANNER
+           ============================================================ */
+        .status-banner {
+            background: linear-gradient(135deg, #2563eb 0%, #1a4fcf 100%);
+            border-radius: var(--r-xl);
+            padding: var(--s-5) var(--s-4);
+            margin-bottom: var(--s-5);
+            display: flex;
+            flex-direction: column;
+            gap: var(--s-4);
+            box-shadow: 0 16px 40px rgba(37, 99, 235, 0.28);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .status-banner::before {
+            content: '';
+            position: absolute;
+            top: -120px;
+            left: -120px;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .status-banner::after {
+            content: '';
+            position: absolute;
+            bottom: -80px;
+            right: -80px;
+            width: 240px;
+            height: 240px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.06) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .status-banner__content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: flex-start;
+            gap: var(--s-3);
+        }
+
+        .status-banner__icon {
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: var(--r-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .status-banner__icon svg { width: 22px; height: 22px; color: #fff; }
+
+        .status-banner__text { min-width: 0; }
+
+        .status-banner__text h2 {
+            font-weight: 700;
+            font-size: var(--text-lg);
+            color: #fff;
+            line-height: 1.35;
+        }
+
+        .status-banner__text p {
+            font-weight: 400;
+            font-size: var(--text-sm);
+            color: rgba(255, 255, 255, 0.82);
+            margin-top: 2px;
+            line-height: 1.6;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.14);
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: var(--r-pill);
+            font-size: var(--text-xs);
+            font-weight: 700;
+            margin-top: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .status-badge__dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #bbf7d0;
+            animation: livePulse 1.8s ease-in-out infinite;
+        }
+
+        @keyframes livePulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(187, 247, 208, 0.7); }
+            50% { opacity: 0.6; box-shadow: 0 0 0 6px rgba(187, 247, 208, 0); }
+        }
+
+        .status-banner__meta {
+            position: relative;
+            z-index: 2;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: var(--text-sm);
+            font-weight: 500;
+            padding-top: var(--s-3);
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .status-banner__meta span {
+            display: block;
+            font-weight: 400;
+            font-size: var(--text-xs);
+            opacity: 0.7;
+            margin-top: 2px;
+        }
+
+        @media (min-width: 768px) {
+            .status-banner {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                padding: var(--s-6) var(--s-8);
+                gap: var(--s-6);
+            }
+            .status-banner__content { align-items: center; }
+            .status-banner__icon { width: 56px; height: 56px; }
+            .status-banner__icon svg { width: 28px; height: 28px; }
+            .status-banner__text h2 { font-size: var(--text-xl); }
+            .status-banner__meta {
+                text-align: left;
+                padding-top: 0;
+                border-top: none;
+                flex-shrink: 0;
+            }
+        }
+
+        /* ============================================================
+           HERO
+           ============================================================ */
+        .hero {
+            background: var(--white);
+            border-radius: var(--r-xl);
+            padding: var(--s-5) var(--s-4);
+            margin-bottom: var(--s-5);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-light);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -80px;
+            left: -80px;
+            width: 220px;
+            height: 220px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.05) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .hero__inner {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            gap: var(--s-5);
+        }
+
+        .hero__logo-area {
+            display: flex;
+            align-items: center;
+            gap: var(--s-3);
+        }
+
+        .hero__logo-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--r-md);
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+            flex-shrink: 0;
+        }
+
+        .hero__logo-icon svg { width: 24px; height: 24px; }
+
+        .hero__logo-text {
+            font-weight: 800;
+            font-size: var(--text-lg);
+            color: var(--dark);
+            line-height: 1.2;
+            display: block;
+        }
+
+        .hero__logo-sub {
+            font-weight: 400;
+            font-size: var(--text-xs);
+            color: var(--text-tertiary);
+            display: block;
+        }
+
+        .hero__label {
+            font-weight: 600;
+            font-size: var(--text-xs);
+            color: var(--accent);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .hero__title-main {
+            font-weight: 800;
+            font-size: var(--text-2xl);
+            color: var(--dark);
+            line-height: 1.3;
+            letter-spacing: -0.02em;
+        }
+
+        .hero__title-sub {
+            font-weight: 500;
+            font-size: var(--text-sm);
+            color: var(--text-secondary);
+            display: block;
+            margin-top: 4px;
+        }
+
+        .hero__badges {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: var(--s-4);
+            position: relative;
+            z-index: 2;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 10px;
+            border-radius: var(--r-pill);
+            font-size: var(--text-xs);
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .badge--primary { background: var(--primary-light); color: var(--primary); border: 1px solid rgba(37, 99, 235, 0.15); }
+        .badge--accent { background: var(--accent-light); color: #0d9488; border: 1px solid rgba(20, 184, 166, 0.18); }
+        .badge--success { background: var(--success-light); color: var(--success); border: 1px solid rgba(22, 163, 74, 0.2); }
+        .badge--purple { background: var(--purple-light); color: var(--purple); border: 1px solid rgba(124, 58, 237, 0.15); }
+
+        .badge__dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .badge--primary .badge__dot { background: var(--primary); }
+        .badge--accent .badge__dot { background: var(--accent); }
+        .badge--success .badge__dot { background: var(--success); }
+        .badge--purple .badge__dot { background: var(--purple); }
+
+        @media (min-width: 768px) {
+            .hero { padding: var(--s-8) var(--s-10); }
+            .hero__inner {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                gap: var(--s-8);
+            }
+            .hero__logo-icon { width: 52px; height: 52px; }
+            .hero__logo-icon svg { width: 28px; height: 28px; }
+            .hero__title-main { font-size: var(--text-3xl); }
+            .hero__titles { text-align: left; }
+            .hero__badges { gap: 10px; margin-top: var(--s-5); }
+            .badge { padding: 7px 14px; font-size: var(--text-sm); }
+        }
+
+        /* ============================================================
+           QUICK NAV (horizontal snap scroll)
+           ============================================================ */
+        .quick-nav {
+            margin-bottom: var(--s-5);
+            padding: var(--s-3) 0;
+            position: relative;
+        }
+
+        .quick-nav__label {
+            font-size: var(--text-xs);
+            font-weight: 700;
+            color: var(--text-tertiary);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: var(--s-2);
+            padding: 0 var(--s-1);
+        }
+
+        .quick-nav__track {
+            display: flex;
+            gap: var(--s-2);
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            padding: 4px 2px;
+            scroll-padding-inline-start: 2px;
+        }
+
+        .quick-nav__track::-webkit-scrollbar { display: none; }
+
+        .quick-nav__item {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            background: var(--white);
+            border: 1.5px solid var(--border-light);
+            border-radius: var(--r-pill);
+            font-size: var(--text-sm);
+            font-weight: 600;
+            color: var(--text-secondary);
+            scroll-snap-align: start;
+            flex-shrink: 0;
+            transition: var(--t-fast);
+            min-height: 44px;
+            box-shadow: var(--shadow-xs);
+        }
+
+        .quick-nav__item:active { transform: scale(0.96); }
+
+        .quick-nav__item:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .quick-nav__num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: #fff;
+            font-size: 0.7rem;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        .quick-nav__item:nth-child(2) .quick-nav__num { background: var(--accent); }
+        .quick-nav__item:nth-child(3) .quick-nav__num { background: var(--purple); }
+        .quick-nav__item:nth-child(4) .quick-nav__num { background: var(--warning); }
+        .quick-nav__item:nth-child(5) .quick-nav__num { background: var(--pink); }
+        .quick-nav__item:nth-child(6) .quick-nav__num { background: var(--dark-secondary); }
+
+        @media (min-width: 768px) {
+            .quick-nav__track {
+                flex-wrap: wrap;
+                overflow-x: visible;
+                scroll-snap-type: none;
+            }
+            .quick-nav__item { flex-shrink: 1; }
+        }
+
+        /* ============================================================
+           SECTION
+           ============================================================ */
+        .section { margin-bottom: var(--s-6); }
+
+        .section__header {
+            display: flex;
+            align-items: center;
+            gap: var(--s-3);
+            margin-bottom: var(--s-4);
+        }
+
+        .section__icon {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--r-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .section__icon svg { width: 18px; height: 18px; }
+
+        .section__title {
+            font-weight: 700;
+            font-size: var(--text-lg);
+            color: var(--dark);
+            line-height: 1.4;
+        }
+
+        @media (min-width: 768px) {
+            .section { margin-bottom: var(--s-8); }
+            .section__header { gap: var(--s-4); margin-bottom: var(--s-5); }
+            .section__icon { width: 44px; height: 44px; }
+            .section__icon svg { width: 22px; height: 22px; }
+            .section__title { font-size: var(--text-xl); }
+        }
+
+        /* ============================================================
+           MEETING INFO GRID — 2×2 mobile, 4×1 desktop
+           ============================================================ */
+        .meeting-info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--s-2);
+        }
+
+        .meeting-info-card {
+            background: var(--white);
+            border-radius: var(--r-md);
+            padding: var(--s-3);
+            box-shadow: var(--shadow-xs);
+            border: 1px solid var(--border-light);
+            display: flex;
+            align-items: flex-start;
+            gap: var(--s-2);
+            transition: var(--t-fast);
+            min-width: 0;
+        }
+
+        .meeting-info-card__icon {
+            width: 32px;
+            height: 32px;
+            border-radius: var(--r-xs);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            background: #f8fafc;
+            color: var(--text-secondary);
+        }
+
+        .meeting-info-card__icon svg { width: 16px; height: 16px; }
+
+        .meeting-info-card__content {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 0;
+        }
+
+        .meeting-info-card__label {
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+        }
+
+        .meeting-info-card__value {
+            font-weight: 700;
+            font-size: var(--text-sm);
+            color: var(--dark);
+            line-height: 1.4;
+            overflow-wrap: break-word;
+        }
+
+        .meeting-info-card__sub {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        @media (min-width: 640px) {
+            .meeting-info-card { padding: var(--s-4) var(--s-5); gap: var(--s-3); border-radius: var(--r-lg); }
+            .meeting-info-card__icon { width: 42px; height: 42px; }
+            .meeting-info-card__icon svg { width: 20px; height: 20px; }
+            .meeting-info-card__label { font-size: var(--text-xs); }
+            .meeting-info-card__value { font-size: var(--text-base); }
+            .meeting-info-card__sub { font-size: var(--text-xs); }
+        }
+
+        @media (min-width: 1024px) {
+            .meeting-info-grid { grid-template-columns: repeat(4, 1fr); gap: var(--s-4); }
+        }
+
+        /* ============================================================
+           PARTIES GRID
+           ============================================================ */
+        .parties-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--s-3);
+        }
+
+        .party-card {
+            background: var(--white);
+            border-radius: var(--r-lg);
+            padding: var(--s-4);
+            box-shadow: var(--shadow-xs);
+            border: 1px solid var(--border-light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .party-card--client { border-right: 3px solid var(--accent); }
+        .party-card--company { border-right: 3px solid var(--primary); }
+
+        .party-card__label {
+            font-size: var(--text-xs);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            color: var(--text-tertiary);
+            margin-bottom: var(--s-1);
+        }
+
+        .party-card__name {
+            font-weight: 800;
+            font-size: var(--text-lg);
+            color: var(--dark);
+            line-height: 1.3;
+            margin-bottom: 2px;
+        }
+
+        .party-card__title {
+            font-weight: 500;
+            font-size: var(--text-sm);
+            color: var(--text-secondary);
+        }
+
+        .party-card__members {
+            margin-top: var(--s-3);
+            display: flex;
+            flex-direction: column;
+            gap: var(--s-2);
+        }
+
+        .party-card__member-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #f8fafc;
+            padding: 8px 12px;
+            border-radius: var(--r-sm);
+            font-size: var(--text-sm);
+            font-weight: 600;
+            color: var(--dark-secondary);
+            border: 1px solid var(--border-light);
+            flex-wrap: wrap;
+        }
+
+        .party-card__member-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary);
+            flex-shrink: 0;
+        }
+
+        @media (min-width: 768px) {
+            .parties-grid { grid-template-columns: 1fr 1fr; gap: var(--s-4); }
+            .party-card { padding: var(--s-6); }
+            .party-card__name { font-size: var(--text-xl); }
+            .party-card__members { flex-direction: row; flex-wrap: wrap; }
+        }
+
+        /* ============================================================
+           CONTENT CARDS
+           ============================================================ */
+        .intro-card,
+        .objective-card,
+        .summary-card {
+            background: var(--white);
+            border-radius: var(--r-lg);
+            padding: var(--s-4);
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-xs);
+        }
+
+        .intro-card { border-right: 3px solid var(--accent); }
+        .objective-card { border-right: 3px solid var(--primary); }
+        .summary-card { border-right: 3px solid var(--accent); }
+
+        .intro-card p,
+        .summary-card p {
+            font-size: var(--text-base);
+            color: var(--text-secondary);
+            line-height: 1.9;
+            margin-bottom: var(--s-3);
+        }
+
+        .intro-card p:last-child,
+        .summary-card p:last-child { margin-bottom: 0; }
+
+        .intro-card strong,
+        .summary-card strong { color: var(--dark); font-weight: 700; }
+
+        @media (min-width: 768px) {
+            .intro-card,
+            .objective-card,
+            .summary-card { padding: var(--s-6) var(--s-8); }
+        }
+
+        /* ============================================================
+           DECISIONS OVERVIEW — 2 col mobile, 3 col desktop
+           ============================================================ */
+        .decisions-overview {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--s-2);
+        }
+
+        .overview-card {
+            background: var(--white);
+            border-radius: var(--r-md);
+            padding: var(--s-3);
+            box-shadow: var(--shadow-xs);
+            border: 1px solid var(--border-light);
+            transition: var(--t-fast);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .overview-card__num {
+            width: 28px;
+            height: 28px;
+            border-radius: var(--r-xs);
+            background: var(--primary);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.75rem;
+            margin-bottom: var(--s-2);
+            flex-shrink: 0;
+        }
+
+        .overview-card:nth-child(2) .overview-card__num { background: var(--accent); }
+        .overview-card:nth-child(3) .overview-card__num { background: var(--purple); }
+        .overview-card:nth-child(4) .overview-card__num { background: var(--warning); }
+        .overview-card:nth-child(5) .overview-card__num { background: var(--pink); }
+        .overview-card:nth-child(6) .overview-card__num { background: var(--dark-secondary); }
+
+        .overview-card__title {
+            font-weight: 700;
+            font-size: var(--text-sm);
+            color: var(--dark);
+            margin-bottom: 4px;
+            line-height: 1.45;
+        }
+
+        .overview-card__desc {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        @media (min-width: 640px) {
+            .overview-card { padding: var(--s-4); }
+            .overview-card__num { width: 36px; height: 36px; font-size: 0.85rem; }
+            .overview-card__title { font-size: var(--text-base); }
+            .overview-card__desc { font-size: var(--text-sm); }
+        }
+
+        @media (min-width: 1024px) {
+            .decisions-overview { grid-template-columns: repeat(3, 1fr); gap: var(--s-4); }
+            .overview-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+        }
+
+        /* ============================================================
+           DECISION BLOCK
+           ============================================================ */
+        .decision-block {
+            background: var(--white);
+            border-radius: var(--r-lg);
+            box-shadow: var(--shadow-xs);
+            border: 1px solid var(--border-light);
+            overflow: hidden;
+            margin-bottom: var(--s-4);
+        }
+
+        .decision-block__header {
+            padding: var(--s-4);
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            align-items: flex-start;
+            gap: var(--s-3);
+            background: linear-gradient(135deg, #fafbfc, #ffffff);
+        }
+
+        .decision-block__num {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--r-sm);
+            background: var(--primary);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.95rem;
+            flex-shrink: 0;
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.25);
+        }
+
+        .decision-block:nth-child(2) .decision-block__num { background: var(--accent); box-shadow: 0 6px 16px rgba(20, 184, 166, 0.25); }
+        .decision-block:nth-child(3) .decision-block__num { background: var(--purple); box-shadow: 0 6px 16px rgba(124, 58, 237, 0.25); }
+        .decision-block:nth-child(4) .decision-block__num { background: var(--warning); box-shadow: 0 6px 16px rgba(245, 158, 11, 0.25); }
+        .decision-block:nth-child(5) .decision-block__num { background: var(--pink); box-shadow: 0 6px 16px rgba(219, 39, 119, 0.25); }
+        .decision-block:nth-child(6) .decision-block__num { background: var(--dark-secondary); box-shadow: 0 6px 16px rgba(30, 41, 59, 0.25); }
+
+        .decision-block__title {
+            font-weight: 800;
+            font-size: var(--text-base);
+            color: var(--dark);
+            line-height: 1.45;
+            margin-bottom: 2px;
+        }
+
+        .decision-block__meta {
+            font-size: 0.7rem;
+            color: var(--text-tertiary);
+            font-weight: 500;
+        }
+
+        .decision-block__body { padding: var(--s-4); }
+
+        .decision-block__body p {
+            font-size: var(--text-sm);
+            color: var(--text-secondary);
+            line-height: 1.9;
+            margin-bottom: var(--s-3);
+        }
+
+        .decision-block__body p:last-child { margin-bottom: 0; }
+        .decision-block__body strong { color: var(--dark); font-weight: 700; }
+
+        .decision-subtitle {
+            font-weight: 700;
+            font-size: var(--text-sm);
+            color: var(--primary);
+            margin: var(--s-4) 0 var(--s-2);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            line-height: 1.5;
+        }
+
+        .decision-subtitle::before {
+            content: '';
+            width: 3px;
+            height: 16px;
+            background: var(--primary);
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        .decision-block:nth-child(2) .decision-subtitle::before { background: var(--accent); }
+        .decision-block:nth-child(3) .decision-subtitle::before { background: var(--purple); }
+        .decision-block:nth-child(4) .decision-subtitle::before { background: var(--warning); }
+        .decision-block:nth-child(5) .decision-subtitle::before { background: var(--pink); }
+        .decision-block:nth-child(6) .decision-subtitle::before { background: var(--dark-secondary); }
+
+        .decision-subtitle:first-child { margin-top: 0; }
+
+        @media (min-width: 768px) {
+            .decision-block { margin-bottom: var(--s-5); }
+            .decision-block__header { padding: var(--s-6) var(--s-6); gap: var(--s-4); }
+            .decision-block__num { width: 48px; height: 48px; font-size: 1.15rem; border-radius: var(--r-md); }
+            .decision-block__title { font-size: var(--text-lg); }
+            .decision-block__meta { font-size: var(--text-xs); }
+            .decision-block__body { padding: var(--s-6); }
+            .decision-block__body p { font-size: var(--text-base); }
+            .decision-subtitle { font-size: var(--text-base); margin-top: var(--s-5); }
+            .decision-subtitle::before { height: 18px; }
+        }
+
+        /* ============================================================
+           STYLED LIST
+           ============================================================ */
+        .styled-list {
+            list-style: none;
+            padding: 0;
+            margin: var(--s-2) 0 var(--s-4);
+        }
+
+        .styled-list li {
+            padding: 8px 28px 8px 0;
+            position: relative;
+            font-size: var(--text-sm);
+            color: var(--text-secondary);
+            line-height: 1.75;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .styled-list li:last-child { border-bottom: none; }
+
+        .styled-list li::before {
+            content: '✓';
+            position: absolute;
+            right: 0;
+            top: 9px;
+            width: 18px;
+            height: 18px;
+            background: var(--success-light);
+            color: var(--success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            font-weight: 800;
+        }
+
+        .styled-list li strong { color: var(--dark); }
+
+        @media (min-width: 768px) {
+            .styled-list li { font-size: var(--text-base); padding-top: 10px; padding-bottom: 10px; }
+        }
+
+        /* ============================================================
+           PROCESS STEPS — Timeline on mobile
+           ============================================================ */
+        .process-steps {
+            display: flex;
+            flex-direction: column;
+            gap: var(--s-2);
+            margin: var(--s-3) 0 var(--s-4);
+        }
+
+        .process-step {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--s-3);
+            padding: var(--s-3);
+            background: #f8fafc;
+            border-radius: var(--r-sm);
+            border: 1px solid var(--border-light);
+            transition: var(--t-fast);
+        }
+
+        .process-step__num {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.75rem;
+            flex-shrink: 0;
+            box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2);
+        }
+
+        .process-step__text {
+            font-size: var(--text-sm);
+            color: var(--text-secondary);
+            line-height: 1.7;
+            min-width: 0;
+        }
+
+        @media (min-width: 768px) {
+            .process-steps { gap: var(--s-3); }
+            .process-step { padding: var(--s-4); }
+            .process-step:hover { background: #f1f5f9; border-color: #dde3ed; }
+            .process-step__num { width: 30px; height: 30px; font-size: 0.8rem; }
+            .process-step__text { font-size: var(--text-base); }
+        }
+
+        /* ============================================================
+           OUTPUT / STRATEGIC / VISION BOXES
+           ============================================================ */
+        .output-box {
+            background: var(--success-light);
+            border-radius: var(--r-sm);
+            padding: var(--s-3) var(--s-4);
+            margin: var(--s-4) 0;
+            border-right: 3px solid var(--success);
+        }
+
+        .output-box__title {
+            font-weight: 700;
+            font-size: var(--text-sm);
+            color: var(--success);
+            margin-bottom: var(--s-2);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .output-box ul { list-style: none; padding: 0; margin: 0; }
+
+        .output-box ul li {
+            padding: 4px 22px 4px 0;
+            position: relative;
+            font-size: var(--text-sm);
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .output-box ul li::before {
+            content: '→';
+            position: absolute;
+            right: 0;
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        .strategic-note {
+            background: linear-gradient(145deg, #fffbea, #fffef5);
+            border-radius: var(--r-sm);
+            padding: var(--s-3) var(--s-4);
+            margin: var(--s-4) 0;
+            border-right: 3px solid var(--warning);
+        }
+
+        .strategic-note__label {
+            font-weight: 700;
+            font-size: var(--text-xs);
+            color: var(--warning-dark);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .strategic-note p {
+            font-size: var(--text-sm);
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin: 0;
+        }
+
+        .vision-box {
+            background: linear-gradient(145deg, #0f172a, #1e293b);
+            border-radius: var(--r-md);
+            padding: var(--s-4);
+            margin: var(--s-4) 0;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .vision-box::before {
+            content: '🚀';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            font-size: 80px;
+            opacity: 0.06;
+            pointer-events: none;
+        }
+
+        .vision-box__title {
+            color: #fbbf24;
+            font-weight: 700;
+            font-size: var(--text-sm);
+            margin-bottom: var(--s-2);
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            line-height: 1.5;
+            position: relative;
+        }
+
+        .vision-box p {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: var(--text-sm);
+            line-height: 1.85;
+            margin: 0;
+            position: relative;
+        }
+
+        .vision-box ul {
+            color: rgba(255, 255, 255, 0.85);
+            margin: var(--s-2) 0 0;
+            padding-right: 18px;
+            font-size: var(--text-sm);
+            line-height: 1.85;
+            position: relative;
+        }
+
+        @media (min-width: 768px) {
+            .output-box,
+            .strategic-note,
+            .vision-box { padding: var(--s-4) var(--s-5); }
+            .output-box__title,
+            .strategic-note__label,
+            .vision-box__title { font-size: var(--text-base); }
+            .output-box ul li,
+            .strategic-note p,
+            .vision-box p,
+            .vision-box ul { font-size: var(--text-base); }
+        }
+
+        /* ============================================================
+           RESPONSIVE TABLES → CARD VIEW ON MOBILE
+           ============================================================ */
+        .action-table {
+            background: transparent;
+            border-radius: var(--r-lg);
+            overflow: hidden;
+        }
+
+        .action-table table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: var(--text-sm);
+        }
+
+        /* Mobile: card layout */
+        @media (max-width: 767px) {
+            .action-table {
+                background: transparent;
+                box-shadow: none;
+                border: none;
+                padding: 0;
+            }
+
+            .action-table table,
+            .action-table tbody,
+            .action-table tr,
+            .action-table td {
+                display: block;
+                width: 100%;
+            }
+
+            .action-table thead { display: none; }
+
+            .action-table tr {
+                background: var(--white);
+                border-radius: var(--r-md);
+                border: 1px solid var(--border-light);
+                box-shadow: var(--shadow-xs);
+                padding: var(--s-3);
+                margin-bottom: var(--s-2);
+            }
+
+            .action-table tr:last-child { margin-bottom: 0; }
+
+            .action-table td {
+                padding: 6px 0;
+                border: none;
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                gap: var(--s-3);
+                font-size: var(--text-sm);
+                color: var(--text-secondary);
+                line-height: 1.6;
+            }
+
+            .action-table td:not(:last-child) {
+                border-bottom: 1px dashed var(--border-light);
+                padding-bottom: 8px;
+                margin-bottom: 4px;
+            }
+
+            .action-table td::before {
+                content: attr(data-label);
+                font-weight: 700;
+                font-size: var(--text-xs);
+                color: var(--text-tertiary);
+                flex-shrink: 0;
+                min-width: 70px;
+            }
+
+            .action-table td[data-label="ردیف"] {
+                justify-content: flex-start;
+                padding-bottom: 10px;
+                margin-bottom: 6px;
+                border-bottom: 2px solid var(--border-light);
+            }
+
+            .action-table td[data-label="ردیف"]::before {
+                font-size: var(--text-sm);
+                color: var(--primary);
+                font-weight: 800;
+            }
+
+            .action-table td[data-label="ردیف"] strong {
+                font-size: var(--text-base);
+                color: var(--dark);
+            }
+        }
+
+        /* Desktop: normal table */
+        @media (min-width: 768px) {
+            .action-table {
+                background: var(--white);
+                border-radius: var(--r-lg);
+                overflow: hidden;
+                box-shadow: var(--shadow-xs);
+                border: 1px solid var(--border-light);
+            }
+
+            .action-table th {
+                background: #f8fafc;
+                text-align: right;
+                padding: var(--s-3) var(--s-5);
+                font-weight: 700;
+                color: var(--dark-secondary);
+                border-bottom: 2px solid var(--border);
+                font-size: var(--text-xs);
+                letter-spacing: 0.02em;
+                text-transform: uppercase;
+            }
+
+            .action-table td {
+                padding: var(--s-3) var(--s-5);
+                border-bottom: 1px solid var(--border-light);
+                color: var(--text-secondary);
+                vertical-align: top;
+                font-size: var(--text-sm);
+            }
+
+            .action-table tr:last-child td { border-bottom: none; }
+            .action-table tbody tr:hover { background: #fafbfc; }
+        }
+
+        .action-table .responsible { font-weight: 600; color: var(--dark); font-size: var(--text-xs); }
+        .action-table .responsible-client { color: var(--accent); }
+        .action-table .responsible-company { color: var(--primary); }
+
+        .status-tag {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: var(--r-pill);
+            font-size: 0.7rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .status-tag--pending { background: var(--warning-light); color: var(--warning-dark); }
+        .status-tag--done { background: var(--success-light); color: var(--success); }
+        .status-tag--inprogress { background: var(--primary-light); color: var(--primary); }
+
+        /* ============================================================
+           TRACKS (3 development paths)
+           ============================================================ */
+        .tracks-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--s-3);
+            margin-top: var(--s-4);
+        }
+
+        .track-card {
+            background: var(--white);
+            border-radius: var(--r-lg);
+            padding: var(--s-4);
+            box-shadow: var(--shadow-xs);
+            border: 1px solid var(--border-light);
+        }
+
+        .track-card__icon {
+            font-size: 1.6rem;
+            margin-bottom: var(--s-2);
+            display: block;
+        }
+
+        .track-card__title {
+            font-weight: 700;
+            font-size: var(--text-sm);
+            color: var(--dark);
+            margin-bottom: 6px;
+            line-height: 1.5;
+        }
+
+        .track-card__desc {
+            font-size: var(--text-sm);
+            color: var(--text-secondary);
+            line-height: 1.75;
+        }
+
+        @media (min-width: 768px) {
+            .tracks-grid { grid-template-columns: repeat(3, 1fr); gap: var(--s-4); }
+            .track-card { padding: var(--s-5); }
+            .track-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); transition: var(--t); }
+            .track-card__icon { font-size: 2rem; }
+            .track-card__title { font-size: var(--text-base); }
+        }
+
+        /* ============================================================
+           FOOTER
+           ============================================================ */
+        .footer {
+            text-align: center;
+            padding: var(--s-6) var(--s-3) var(--s-4);
+            margin-top: var(--s-6);
+            border-top: 1px solid var(--border);
+            color: var(--text-tertiary);
+            font-size: var(--text-xs);
+            line-height: 1.8;
+        }
+
+        .footer__brand {
+            font-weight: 700;
+            color: var(--dark);
+            font-size: var(--text-sm);
+        }
+
+        /* ============================================================
+           BACK TO TOP BUTTON
+           ============================================================ */
+        .back-to-top {
+            position: fixed;
+            bottom: max(20px, env(safe-area-inset-bottom));
+            left: max(16px, env(safe-area-inset-left));
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.35);
+            z-index: 900;
+            opacity: 0;
+            transform: translateY(20px) scale(0.8);
+            pointer-events: none;
+            transition: var(--t);
+            min-height: 48px;
+            touch-action: manipulation;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+
+        .back-to-top:hover { background: var(--primary-dark); }
+        .back-to-top:active { transform: scale(0.92); }
+        .back-to-top svg { width: 22px; height: 22px; }
+
+        /* ============================================================
+           REVEAL ANIMATION
+           ============================================================ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+        }
+
+        .reveal--visible { opacity: 1; transform: translateY(0); }
+
+        .reveal-delay-1 { transition-delay: 0.05s; }
+        .reveal-delay-2 { transition-delay: 0.1s; }
+        .reveal-delay-3 { transition-delay: 0.15s; }
+
+        @media (prefers-reduced-motion: reduce) {
+            .reveal { opacity: 1; transform: none; }
+        }
+
+        /* ============================================================
+           PRINT STYLES
+           ============================================================ */
+        @media print {
+            @page { size: A4; margin: 12mm 14mm 16mm 14mm; }
+
+            body {
+                background: #fff !important;
+                color: #000 !important;
+                font-size: 10pt;
+                line-height: 1.6;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .print-bar,
+            .back-to-top,
+            .scroll-progress,
+            .quick-nav { display: none !important; }
+
+            .main-container { max-width: 100%; padding: 0; margin: 0; }
+
+            .status-banner {
+                background: #2563eb !important;
+                box-shadow: none !important;
+                border: 2px solid #1a4fcf !important;
+                color: #fff !important;
+                break-inside: avoid;
+            }
+
+            .hero, .card, .meeting-info-card, .party-card, .objective-card,
+            .summary-card, .decision-block, .overview-card, .track-card,
+            .intro-card, .action-table, .output-box, .strategic-note {
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+                background: #fff !important;
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+
+            .vision-box {
+                background: #1e293b !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .section { margin-bottom: 14px; break-inside: avoid; page-break-inside: avoid; }
+
+            .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+
+            .decision-block { margin-bottom: 12px; }
+            .decision-block__body { padding: 12px 16px; }
+            .decision-block__header { padding: 12px 16px; }
+
+            .action-table th,
+            .action-table td { padding: 8px 12px; font-size: 9pt; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== SCROLL PROGRESS ==================== -->
+    <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+    <!-- ==================== PRINT BAR ==================== -->
+    <header class="print-bar" role="banner">
+        <div class="print-bar__brand">
+            <span class="print-bar__brand-dot" aria-hidden="true"></span>
+            <span class="print-bar__brand-text">Code Packs</span>
+            <span class="print-bar__brand-sep">|</span>
+            <span class="print-bar__brand-label" style="font-weight:400;color:#94a3b8;">گزارش تصمیمات</span>
+        </div>
+        <div class="print-bar__actions">
+            <button class="btn btn--outline" onclick="window.print()" aria-label="دانلود PDF">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                <span class="btn__label">دانلود PDF</span>
+            </button>
+            <button class="btn btn--primary" onclick="window.print()" aria-label="چاپ">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 6 2 18 2 18 9"/><path d="M6 12H4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2h-2"/><rect x="6" y="14" width="12" height="8"/>
+                </svg>
+                <span class="btn__label">چاپ</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ==================== MAIN ==================== -->
+    <main class="main-container">
+
+        <!-- ============ STATUS BANNER ============ -->
+        <div class="status-banner reveal" role="status">
+            <div class="status-banner__content">
+                <div class="status-banner__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+                    </svg>
+                </div>
+                <div class="status-banner__text">
+                    <h2>جلسه توسعه محصول برگزار شد</h2>
+                    <p>گزارش تصمیمات جلسه توسعه پلتفرم هوشمند املاک پازل</p>
+                    <span class="status-badge">
+                        <span class="status-badge__dot" aria-hidden="true"></span>
+                        ۶ تصمیم کلیدی اتخاذ شد
+                    </span>
+                </div>
+            </div>
+            <div class="status-banner__meta">
+                <strong>تاریخ:</strong> چهارشنبه ۶ آبان ۱۴۰۵
+                <span>Puzzle × CodePacks</span>
+            </div>
+        </div>
+
+        <!-- ============ HERO ============ -->
+        <header class="hero reveal">
+            <div class="hero__inner">
+                <div class="hero__logo-area">
+                    <div class="hero__logo-icon" aria-hidden="true">
+                        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="4" y="4" width="24" height="24" rx="6" fill="white" fill-opacity="0.95"/>
+                            <path d="M10 20L15 12L20 20" stroke="#2563eb" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                            <circle cx="15" cy="10" r="2" fill="#14b8a6"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <span class="hero__logo-text">Code Packs</span>
+                        <span class="hero__logo-sub">Digital Solutions Company</span>
+                    </div>
+                </div>
+                <div class="hero__titles">
+                    <span class="hero__label">گزارش تصمیمات جلسه</span>
+                    <h1 class="hero__title-main">توسعه پلتفرم هوشمند املاک پازل</h1>
+                    <span class="hero__title-sub">Meeting Decisions &amp; Product Development Roadmap</span>
+                </div>
+            </div>
+            <div class="hero__badges">
+                <span class="badge badge--success"><span class="badge__dot"></span> برگزار شده</span>
+                <span class="badge badge--primary"><span class="badge__dot"></span> Product Development</span>
+                <span class="badge badge--accent"><span class="badge__dot"></span> AI &amp; Automation</span>
+                <span class="badge badge--purple"><span class="badge__dot"></span> ۶ تصمیم کلیدی</span>
+            </div>
+        </header>
+
+        <!-- ============ QUICK NAV ============ -->
+        <nav class="quick-nav reveal reveal-delay-1" aria-label="پرش سریع به تصمیمات">
+            <div class="quick-nav__label">پرش سریع به تصمیمات</div>
+            <div class="quick-nav__track">
+                <a href="#d1" class="quick-nav__item"><span class="quick-nav__num">۱</span> فرم‌های ثبت</a>
+                <a href="#d2" class="quick-nav__item"><span class="quick-nav__num">۲</span> آزمون مشاوران</a>
+                <a href="#d3" class="quick-nav__item"><span class="quick-nav__num">۳</span> ویدئوهای آموزشی</a>
+                <a href="#d4" class="quick-nav__item"><span class="quick-nav__num">۴</span> کارشناسی ملک</a>
+                <a href="#d5" class="quick-nav__item"><span class="quick-nav__num">۵</span> Judge Engine</a>
+                <a href="#d6" class="quick-nav__item"><span class="quick-nav__num">۶</span> فایل‌های غیرفعال</a>
+            </div>
+        </nav>
+
+        <!-- ============ MEETING INFO ============ -->
+        <section class="section reveal reveal-delay-1">
+            <div class="section__header">
+                <div class="section__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                </div>
+                <h2 class="section__title">اطلاعات جلسه</h2>
+            </div>
+            <div class="meeting-info-grid">
+                <div class="meeting-info-card">
+                    <div class="meeting-info-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="3"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+                    <div class="meeting-info-card__content">
+                        <span class="meeting-info-card__label">نوع جلسه</span>
+                        <span class="meeting-info-card__value">توسعه محصول</span>
+                        <span class="meeting-info-card__sub">Product Development</span>
+                    </div>
+                </div>
+                <div class="meeting-info-card">
+                    <div class="meeting-info-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="3"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+                    <div class="meeting-info-card__content">
+                        <span class="meeting-info-card__label">تاریخ برگزاری</span>
+                        <span class="meeting-info-card__value">چهارشنبه ۶ آبان ۱۴۰۵</span>
+                        <span class="meeting-info-card__sub">Wednesday, 28 Oct 2026</span>
+                    </div>
+                </div>
+                <div class="meeting-info-card">
+                    <div class="meeting-info-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+                    <div class="meeting-info-card__content">
+                        <span class="meeting-info-card__label">حاضرین</span>
+                        <span class="meeting-info-card__value">پازل + CodePacks</span>
+                        <span class="meeting-info-card__sub">دو طرف</span>
+                    </div>
+                </div>
+                <div class="meeting-info-card">
+                    <div class="meeting-info-card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+                    <div class="meeting-info-card__content">
+                        <span class="meeting-info-card__label">وضعیت</span>
+                        <span class="meeting-info-card__value">برگزار شده</span>
+                        <span class="meeting-info-card__sub" style="color:#16a34a;font-weight:600;">✓ ۶ تصمیم نهایی</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ PARTIES ============ -->
+        <section class="section reveal reveal-delay-1">
+            <div class="section__header">
+                <div class="section__icon" style="background:#f0f9f8;color:#14b8a6;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
+                <h2 class="section__title">طرفین جلسه</h2>
+            </div>
+            <div class="parties-grid">
+                <div class="party-card party-card--client">
+                    <span class="party-card__label">مجموعه سفارش‌دهنده</span>
+                    <div class="party-card__name">پازل (Puzzle)</div>
+                    <div class="party-card__title">پلتفرم هوشمند املاک</div>
+                    <div style="margin-top:12px;">
+                        <span style="font-weight:600;font-size:0.85rem;">نماینده:</span>
+                        <span style="font-weight:500;">تیم مدیریت پازل</span>
+                    </div>
+                    <div class="party-card__title" style="margin-top:4px;">حاضر در جلسه توسعه محصول</div>
+                </div>
+                <div class="party-card party-card--company">
+                    <span class="party-card__label">شرکت مجری</span>
+                    <div class="party-card__name">Code Packs</div>
+                    <div class="party-card__members">
+                        <span class="party-card__member-tag">
+                            <span class="party-card__member-dot"></span>
+                            <span>امیر محمد بهرامی</span>
+                            <span style="font-weight:400;font-size:0.7rem;color:#64748b;">| CEO &amp; Lead Software Architect</span>
+                        </span>
+                        <span class="party-card__member-tag">
+                            <span class="party-card__member-dot" style="background:#14b8a6;"></span>
+                            <span>مبین شیخی</span>
+                            <span style="font-weight:400;font-size:0.7rem;color:#64748b;">| Marketing Manager</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ INTRO ============ -->
+        <section class="section reveal reveal-delay-2">
+            <div class="section__header">
+                <div class="section__icon" style="background:#f0f4ff;color:#2563eb;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                </div>
+                <h2 class="section__title">مقدمه</h2>
+            </div>
+            <div class="intro-card">
+                <p>
+                    در جلسه برگزارشده میان مجموعه <strong>پازل</strong> و تیم <strong>کدپکس</strong>، شش تصمیم مهم در راستای توسعه قابلیت‌های تخصصی پلتفرم، هوشمندسازی فرآیندهای داخلی، ارتقای کیفیت مشاوران و ایجاد خدمات جدید در حوزه املاک اتخاذ شد.
+                </p>
+                <p>
+                    این تصمیم‌ها صرفاً به اضافه‌شدن چند قابلیت جدید به سامانه محدود نمی‌شوند؛ بلکه بخشی از مسیر توسعه پازل به‌عنوان یک مجموعه املاک مبتنی بر <strong>داده، هوش مصنوعی، استانداردهای حرفه‌ای و خدمات یکپارچه ملکی</strong> هستند.
+                </p>
+                <p>
+                    در ادامه، تصمیمات جلسه به تفکیک و با تشریح هدف، منطق عملکرد و ابعاد اجرایی آن‌ها ارائه شده‌اند.
+                </p>
+            </div>
+        </section>
+
+        <!-- ============ DECISIONS OVERVIEW ============ -->
+        <section class="section reveal reveal-delay-2">
+            <div class="section__header">
+                <div class="section__icon" style="background:#f5f0ff;color:#7c3aed;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 22 8.5 12 15 2 8.5 12 2"/><polyline points="2 15.5 12 22 22 15.5"/><polyline points="2 11.5 12 18 22 11.5"/></svg>
+                </div>
+                <h2 class="section__title">خلاصه شش تصمیم جلسه</h2>
+            </div>
+            <div class="decisions-overview">
+                <div class="overview-card">
+                    <div class="overview-card__num">۱</div>
+                    <div class="overview-card__title">بازطراحی فرم‌های ثبت مشتری و ملک</div>
+                    <div class="overview-card__desc">هماهنگ‌سازی کامل فرم‌های سامانه با دو فرم گوگل اختصاصی مجموعه پازل.</div>
+                </div>
+                <div class="overview-card">
+                    <div class="overview-card__num">۲</div>
+                    <div class="overview-card__title">آزمون هوشمند استخدام و ارزیابی مشاوران</div>
+                    <div class="overview-card__desc">آزمون تخصصی + شخصیت‌شناسی با هسته هوش مصنوعی پازل و مسیر آموزشی اختصاصی.</div>
+                </div>
+                <div class="overview-card">
+                    <div class="overview-card__num">۳</div>
+                    <div class="overview-card__title">تولید ویدئوهای آموزشی با دو هویت بصری</div>
+                    <div class="overview-card__desc">آموزش با مدل انسانی مجموعه و کاراکتر اختصاصی پازل.</div>
+                </div>
+                <div class="overview-card">
+                    <div class="overview-card__num">۴</div>
+                    <div class="overview-card__title">بخش «کارشناسی در محل ملک»</div>
+                    <div class="overview-card__desc">ثبت درخواست آنلاین، اعزام کارشناس و مسیر توسعه به بازسازی و پیمانکاری.</div>
+                </div>
+                <div class="overview-card">
+                    <div class="overview-card__num">۵</div>
+                    <div class="overview-card__title">توسعه موتور قضاوت (Judge Engine)</div>
+                    <div class="overview-card__desc">داوری هوشمند همکاری‌های مشترک و تعیین درصد سهم مشاوران بر اساس منشور پازل.</div>
+                </div>
+                <div class="overview-card">
+                    <div class="overview-card__num">۶</div>
+                    <div class="overview-card__title">بازشدن فایل‌های به‌روزرسانی‌نشده</div>
+                    <div class="overview-card__desc">فعال‌سازی امکان مشاهده فایل برای سایر مشاوران در صورت عدم پیگیری.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ DECISION 1 ============ -->
+        <section class="section reveal reveal-delay-2">
+            <div class="section__header">
+                <div class="section__icon" style="background:#f0f4ff;color:#2563eb;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                </div>
+                <h2 class="section__title">تصمیمات جلسه به تفکیک</h2>
+            </div>
+
+            <article class="decision-block" id="d1">
+                <div class="decision-block__header">
+                    <div class="decision-block__num">۱</div>
+                    <div>
+                        <div class="decision-block__title">بازطراحی فرم‌های ثبت مشتری و ثبت ملک بر اساس فرم‌های اختصاصی مجموعه پازل</div>
+                        <div class="decision-block__meta">فرآیندهای داخلی · استانداردسازی</div>
+                    </div>
+                </div>
+                <div class="decision-block__body">
+                    <div class="decision-subtitle">تصمیم جلسه</div>
+                    <p>قرار شد فرم‌های ثبت مشتری و ثبت ملک در پلتفرم، مطابق با دو فرم گوگل اختصاصی مجموعه پازل تغییر و بازطراحی شوند.</p>
+
+                    <div class="decision-subtitle">دامنه تغییرات</div>
+                    <p>این تصمیم شامل دو بخش اصلی است:</p>
+                    <p><strong>الف) فرم ثبت مشتری</strong></p>
+                    <p>فرآیند ثبت اطلاعات مشتریان در دسته‌بندی‌های زیر، مطابق فرم گوگل مجموعه پازل تنظیم خواهد شد:</p>
+                    <ul class="styled-list">
+                        <li>خریدار</li>
+                        <li>فروشنده</li>
+                        <li>مستأجر</li>
+                        <li>موجر</li>
+                    </ul>
+                    <p><strong>ب) فرم ثبت ملک</strong></p>
+                    <p>فرم ثبت ملک نیز مطابق ساختار، فیلدها و اطلاعات تعریف‌شده در فرم گوگل اختصاصی مجموعه پازل تغییر خواهد کرد.</p>
+
+                    <div class="decision-subtitle">هدف از این تصمیم</div>
+                    <p>هدف، یکسان‌سازی فرآیند ثبت اطلاعات در پلتفرم با رویه‌های عملیاتی مجموعه پازل است تا اطلاعات مشتریان و املاک دقیقاً بر اساس ساختار مورد استفاده خود مجموعه دریافت و ثبت شوند.</p>
+
+                    <div class="output-box">
+                        <div class="output-box__title">🎯 خروجی مورد انتظار</div>
+                        <ul>
+                            <li>فرم ثبت مشتری با چهار دسته‌بندی: خریدار، فروشنده، مستأجر، موجر</li>
+                            <li>فرم ثبت ملک منطبق بر فرم گوگل اختصاصی پازل</li>
+                            <li>یکسان‌سازی کامل با رویه‌های عملیاتی مجموعه</li>
+                        </ul>
+                    </div>
+                </div>
+            </article>
+
+            <!-- ============ DECISION 2 ============ -->
+            <article class="decision-block" id="d2">
+                <div class="decision-block__header">
+                    <div class="decision-block__num">۲</div>
+                    <div>
+                        <div class="decision-block__title">طراحی آزمون هوشمند استخدام و ارزیابی مشاوران با استفاده از هسته هوش مصنوعی اختصاصی پازل</div>
+                        <div class="decision-block__meta">منابع انسانی · هوش مصنوعی</div>
+                    </div>
+                </div>
+                <div class="decision-block__body">
+                    <div class="decision-subtitle">تصمیم جلسه</div>
+                    <p>قرار شد تیم کدپکس با مهندس مجموعه تعامل و همکاری داشته باشد تا یک آزمون اختصاصی و دستی برای ارزیابی مشاوران طراحی شود. همچنین منابع آموزشی معتبر و مرتبط شناسایی و جمع‌آوری شوند تا آزمون و منابع آموزشی در اختیار هسته هوش مصنوعی اختصاصی پازل قرار بگیرند و این هسته بتواند فرآیند آزمون‌گیری و ارزیابی مشاوران را انجام دهد.</p>
+
+                    <div class="decision-subtitle">ساختار آزمون</div>
+                    <p>آزمون موردنظر از دو محور اصلی تشکیل می‌شود:</p>
+                    <p><strong>الف) آزمون تخصصی مشاوره املاک</strong></p>
+                    <p>این بخش میزان دانش و توانمندی فرد در حوزه مشاوره املاک را در موضوعات و بخش‌های مختلف بررسی می‌کند. هدف این است که مشخص شود فرد تا چه اندازه با مباحث تخصصی، فرآیندهای کاری و الزامات حرفه مشاوره املاک آشنایی دارد.</p>
+                    <p><strong>ب) آزمون شخصیت‌شناسی</strong></p>
+                    <p>در این بخش، ویژگی‌های شخصیتی و رفتاری فرد مورد ارزیابی قرار می‌گیرد تا شناخت دقیق‌تری از تناسب او با موقعیت شغلی مشاور املاک به دست آید.</p>
+
+                    <div class="decision-subtitle">نقش هسته هوش مصنوعی پازل</div>
+                    <p>پس از طراحی آزمون و جمع‌آوری منابع آموزشی، محتوای مربوطه در اختیار هسته هوش مصنوعی اختصاصی پازل قرار می‌گیرد تا این هسته بتواند فرآیند ارزیابی را اجرا کند.</p>
+
+                    <div class="process-steps">
+                        <div class="process-step"><div class="process-step__num">۱</div><div class="process-step__text">مشاور یا متقاضی همکاری وارد فرآیند آزمون می‌شود.</div></div>
+                        <div class="process-step"><div class="process-step__num">۲</div><div class="process-step__text">هسته هوش مصنوعی پازل آزمون‌های تخصصی و شخصیت‌شناسی را از او دریافت می‌کند.</div></div>
+                        <div class="process-step"><div class="process-step__num">۳</div><div class="process-step__text">پاسخ‌ها مورد ارزیابی قرار می‌گیرند.</div></div>
+                        <div class="process-step"><div class="process-step__num">۴</div><div class="process-step__text">بر اساس نتایج، به فرد امتیاز داده می‌شود.</div></div>
+                        <div class="process-step"><div class="process-step__num">۵</div><div class="process-step__text">نتیجه ارزیابی، مبنای تعیین مسیر آموزشی اختصاصی او قرار می‌گیرد.</div></div>
+                    </div>
+
+                    <div class="decision-subtitle">سیستم امتیازدهی و مسیر آموزشی اختصاصی</div>
+                    <p>یکی از بخش‌های مهم این تصمیم، اتصال مستقیم نتیجه آزمون به آموزش است. به این معنا که آزمون صرفاً برای سنجش و نمره‌دهی طراحی نمی‌شود؛ بلکه نتیجه آن مشخص می‌کند هر فرد برای رسیدن به سطح مورد انتظار مجموعه پازل، به چه آموزش‌هایی نیاز دارد.</p>
+                    <p>برای مثال، اگر فرد در یک بخش تخصصی امتیاز مناسبی کسب نکند، دوره آموزشی مرتبط با همان بخش برای او در نظر گرفته می‌شود. در نتیجه، هر مشاور بر اساس عملکرد و نقاط قابل بهبود خود، به دوره‌های آموزشی اختصاصی مجموعه پازل هدایت خواهد شد.</p>
+
+                    <div class="output-box">
+                        <div class="output-box__title">🎯 خروجی مورد انتظار</div>
+                        <ul>
+                            <li>آزمون تخصصی اختصاصی مشاوران املاک</li>
+                            <li>آزمون شخصیت‌شناسی</li>
+                            <li>سیستم امتیازدهی و ارزیابی</li>
+                            <li>اتصال نتایج آزمون به هسته هوش مصنوعی پازل</li>
+                            <li>تعیین نیازهای آموزشی هر فرد</li>
+                            <li>ارائه دوره‌های آموزشی اختصاصی پازل بر اساس نتیجه ارزیابی</li>
+                        </ul>
+                    </div>
+
+                    <div class="strategic-note">
+                        <div class="strategic-note__label">💡 نکته راهبردی</div>
+                        <p>این ساختار، فرآیند جذب و آماده‌سازی مشاوران را از یک ارزیابی عمومی به یک فرآیند اختصاصی و مبتنی بر سنجش و آموزش تبدیل می‌کند.</p>
+                    </div>
+                </div>
+            </article>
+
+            <!-- ============ DECISION 3 ============ -->
+            <article class="decision-block" id="d3">
+                <div class="decision-block__header">
+                    <div class="decision-block__num">۳</div>
+                    <div>
+                        <div class="decision-block__title">تولید و ارائه ویدئوهای آموزشی با دو هویت بصری متفاوت</div>
+                        <div class="decision-block__meta">آموزش · برندینگ</div>
+                    </div>
+                </div>
+                <div class="decision-block__body">
+                    <div class="decision-subtitle">تصمیم جلسه</div>
+                    <p>قرار شد ویدئوهای آموزشی مجموعه پازل با استفاده از دو شیوه تولید و ارائه شوند:</p>
+                    <p><strong>۱. آموزش با حضور مدل انسانی مجموعه</strong></p>
+                    <p>در این شیوه، محتوای آموزشی با حضور فرد واقعی و مدل انسانی اختصاصی مجموعه تولید می‌شود. این مدل برای انتقال مستقیم تجربه، توضیح موضوعات تخصصی و ایجاد ارتباط انسانی با مخاطبان و مشاوران مورد استفاده قرار می‌گیرد.</p>
+                    <p><strong>۲. آموزش با کاراکتر اختصاصی پازل</strong></p>
+                    <p>در شیوه دوم، آموزش‌ها با استفاده از کاراکتر اختصاصی و هویت بصری پازل ارائه می‌شوند. این کاراکتر به‌عنوان چهره تصویری و نماد آموزشی مجموعه عمل می‌کند و محتوای آموزشی با حضور آن تولید و منتشر خواهد شد.</p>
+
+                    <div class="decision-subtitle">هدف از این تصمیم</div>
+                    <p>هدف، ایجاد یک ساختار آموزشی با دو هویت مکمل است:</p>
+                    <ul class="styled-list">
+                        <li><strong>مدل انسانی</strong> برای ارائه آموزش با ارتباط مستقیم و واقعی.</li>
+                        <li><strong>کاراکتر اختصاصی پازل</strong> برای ایجاد هویت بصری متمایز و یکپارچه در محتوای آموزشی.</li>
+                    </ul>
+                    <p>به این ترتیب، محتوای آموزشی پازل صرفاً مجموعه‌ای از ویدئوهای پراکنده نخواهد بود، بلکه با دو شیوه مشخص و قابل تشخیص تولید و ارائه می‌شود.</p>
+                </div>
+            </article>
+
+            <!-- ============ DECISION 4 ============ -->
+            <article class="decision-block" id="d4">
+                <div class="decision-block__header">
+                    <div class="decision-block__num">۴</div>
+                    <div>
+                        <div class="decision-block__title">ایجاد بخش اختصاصی «کارشناسی در محل ملک» و توسعه آن به یک خدمت راهبردی برای پازل</div>
+                        <div class="decision-block__meta">خدمات جدید · توسعه کسب‌وکار</div>
+                    </div>
+                </div>
+                <div class="decision-block__body">
+                    <div class="decision-subtitle">تصمیم جلسه</div>
+                    <p>قرار شد یک بخش مستقل با عنوان <strong>کارشناسی در محل ملک</strong> به پلتفرم اضافه شود تا افراد بتوانند اطلاعات ملک خود را ثبت کنند و درخواست حضور کارشناس پازل در محل ملک را ارسال کنند.</p>
+                    <p>این بخش علاوه بر سایت، در تمامی شبکه‌ها و صفحات اجتماعی مجموعه نیز معرفی خواهد شد و لینک مستقیم آن در اختیار مخاطبان قرار می‌گیرد.</p>
+                    <p>همچنین مقرر شد این خدمت در سایت و شبکه‌های اجتماعی با تأکید و برجستگی ویژه معرفی شود؛ زیرا مجموعه پازل برای توسعه جدی این حوزه در آینده برنامه‌ریزی دارد.</p>
+
+                    <div class="decision-subtitle">فرآیند عملکرد بخش کارشناسی ملک</div>
+                    <p>این خدمت باید به شکلی طراحی شود که مالک یا متقاضی بتواند بدون نیاز به طی‌کردن فرآیندهای پیچیده، درخواست کارشناسی ملک خود را ثبت کند.</p>
+
+                    <div class="process-steps">
+                        <div class="process-step"><div class="process-step__num">۱</div><div class="process-step__text">ورود کاربر به بخش کارشناسی در محل ملک.</div></div>
+                        <div class="process-step"><div class="process-step__num">۲</div><div class="process-step__text">ثبت اطلاعات ثبتی و مشخصات ملک توسط متقاضی.</div></div>
+                        <div class="process-step"><div class="process-step__num">۳</div><div class="process-step__text">ثبت موقعیت مکانی ملک یا لوکیشن دقیق آن.</div></div>
+                        <div class="process-step"><div class="process-step__num">۴</div><div class="process-step__text">ثبت درخواست کارشناسی و ارسال اطلاعات برای مجموعه پازل.</div></div>
+                        <div class="process-step"><div class="process-step__num">۵</div><div class="process-step__text">بررسی درخواست و هماهنگی جهت اعزام کارشناس.</div></div>
+                        <div class="process-step"><div class="process-step__num">۶</div><div class="process-step__text">مراجعه کارشناس مجموعه به محل ملک و انجام فرآیند کارشناسی.</div></div>
+                    </div>
+
+                    <div class="decision-subtitle">اهمیت حضور این خدمت در سایت و شبکه‌های اجتماعی</div>
+                    <p>این بخش قرار نیست صرفاً یک فرم معمولی در سایت باشد؛ بلکه به‌عنوان یکی از خدمات شاخص و قابل توسعه پازل معرفی خواهد شد. به همین دلیل، لینک ثبت درخواست کارشناسی باید در دسترس مخاطبان سایت و تمامی شبکه‌های اجتماعی مجموعه قرار بگیرد. تمرکز بر معرفی گسترده این خدمت، امکان جذب مستقیم مالکان و دریافت درخواست‌های کارشناسی را فراهم می‌کند.</p>
+
+                    <div class="vision-box">
+                        <div class="vision-box__title">🚀 چشم‌انداز توسعه آینده: ورود پازل به حوزه پیمانکاری و بازسازی ساختمان</div>
+                        <p>هدف این است که پازل در آینده بتواند از مسیر کارشناسی و ارتباط مستقیم با مالکان، به حوزه پیمانکاری و اجرای پروژه‌های بازسازی ساختمان نیز وارد شود. در این مسیر، مجموعه بتواند پروژه‌های بازسازی را از ابتدا تا انتها بر عهده بگیرد؛ از جمله:</p>
+                        <ul>
+                            <li>بررسی اولیه وضعیت ساختمان و ملک</li>
+                            <li>ارزیابی نیازهای بازسازی</li>
+                            <li>بررسی بخش‌های مختلف ساختمان</li>
+                            <li>برنامه‌ریزی و مدیریت فرآیند بازسازی</li>
+                            <li>هماهنگی و اجرای عملیات ساختمانی</li>
+                            <li>مدیریت مراحل مختلف پروژه تا تکمیل نهایی</li>
+                        </ul>
+                    </div>
+
+                    <div class="strategic-note">
+                        <div class="strategic-note__label">⭐ نکته راهبردی</div>
+                        <p>در تصمیم جلسه تأکید شد که این بخش از اهمیت ویژه‌ای برخوردار است و مجموعه قصد دارد در آینده سرمایه‌گذاری و توسعه قابل توجهی روی آن انجام دهد. بخش کارشناسی در محل ملک می‌تواند نقطه شروع شکل‌گیری یک مسیر خدماتی گسترده‌تر باشد؛ مسیری که در آینده پازل را از یک مجموعه فعال در حوزه معاملات ملکی، به مجموعه‌ای با توان ارائه خدمات کارشناسی، مدیریت بازسازی و پیمانکاری ساختمان توسعه می‌دهد.</p>
+                    </div>
+                </div>
+            </article>
+
+            <!-- ============ DECISION 5 ============ -->
+            <article class="decision-block" id="d5">
+                <div class="decision-block__header">
+                    <div class="decision-block__num">۵</div>
+                    <div>
+                        <div class="decision-block__title">توسعه موتور قضاوت (Judge Engine) در هسته هوش مصنوعی اختصاصی پازل</div>
+                        <div class="decision-block__meta">هوش مصنوعی · مدیریت همکاری‌ها</div>
+                    </div>
+                </div>
+                <div class="decision-block__body">
+                    <div class="decision-subtitle">تصمیم جلسه</div>
+                    <p>قرار شد یک موتور قضاوت یا <strong>Judge Engine</strong> به هسته هوش مصنوعی اختصاصی پازل اضافه شود. وظیفه این موتور، بررسی و داوری میان مشاوران در موقعیت‌هایی است که چند مشاور روی یک فایل ملکی مشترک یا یک مشتری مشترک فعالیت دارند.</p>
+                    <p>این موتور باید بر اساس <strong>منشور اختصاصی پازل</strong> که در اختیار هسته هوش مصنوعی قرار می‌گیرد، شرایط هر پرونده را بررسی کند و درباره نحوه تقسیم سهم و درصد هر مشاور تصمیم‌گیری کند.</p>
+
+                    <div class="decision-subtitle">مسئله‌ای که این قابلیت حل می‌کند</div>
+                    <p>در فعالیت روزمره مشاوران املاک، ممکن است یک ملک توسط چند مشاور پیگیری شود یا یک مشتری به‌صورت مشترک در فرآیند همکاری چند مشاور قرار بگیرد. در چنین شرایطی، تعیین سهم هر مشاور و مشخص‌کردن میزان مشارکت او در نتیجه نهایی می‌تواند به یک موضوع اختلاف‌برانگیز تبدیل شود.</p>
+                    <p>هدف از ایجاد Judge Engine این است که تصمیم‌گیری در چنین موقعیت‌هایی بر اساس ضوابط مشخص و منشور مجموعه انجام شود، نه صرفاً بر اساس برداشت شخصی افراد.</p>
+
+                    <div class="decision-subtitle">نحوه عملکرد موتور قضاوت</div>
+                    <div class="process-steps">
+                        <div class="process-step"><div class="process-step__num">۱</div><div class="process-step__text"><strong>دریافت اطلاعات پرونده مشترک:</strong> اطلاعات مرتبط با فایل ملکی یا مشتری مشترک و سوابق فعالیت مشاوران در اختیار موتور قضاوت قرار می‌گیرد.</div></div>
+                        <div class="process-step"><div class="process-step__num">۲</div><div class="process-step__text"><strong>بررسی منشور اختصاصی پازل:</strong> هسته هوش مصنوعی، منشور و ضوابط تعریف‌شده مجموعه پازل را به‌عنوان مبنای داوری در نظر می‌گیرد.</div></div>
+                        <div class="process-step"><div class="process-step__num">۳</div><div class="process-step__text"><strong>بررسی عملکرد و میزان مشارکت مشاوران:</strong> اطلاعات موجود درباره نقش و فعالیت هر مشاور در پرونده بررسی می‌شود تا میزان مشارکت افراد مشخص شود.</div></div>
+                        <div class="process-step"><div class="process-step__num">۴</div><div class="process-step__text"><strong>تحلیل و صدور نتیجه:</strong> موتور قضاوت با درنظرگرفتن شرایط پرونده و قواعد منشور پازل، نتیجه بررسی را ارائه می‌کند.</div></div>
+                        <div class="process-step"><div class="process-step__num">۵</div><div class="process-step__text"><strong>تعیین درصد سهم هر مشاور:</strong> خروجی این فرآیند، تعیین سهم و درصد هر یک از مشاوران حاضر در همکاری مشترک خواهد بود.</div></div>
+                    </div>
+
+                    <div class="decision-subtitle">ویژگی کلیدی این تصمیم</div>
+                    <p>نکته مهم این است که Judge Engine قرار نیست بر اساس یک قاعده عمومی و ثابت برای همه پرونده‌ها تصمیم بگیرد؛ بلکه مبنای داوری آن، <strong>منشور اختصاصی مجموعه پازل</strong> خواهد بود.</p>
+                    <p>به بیان دیگر، پازل اصول همکاری و قواعد تقسیم سهم خود را تعریف می‌کند و هسته هوش مصنوعی بر اساس همان چارچوب، پرونده‌های مشترک را بررسی و داوری می‌کند. این قابلیت، یکی از بخش‌های اختصاصی و متمایزکننده هسته هوش مصنوعی پازل خواهد بود.</p>
+                </div>
+            </article>
+
+            <!-- ============ DECISION 6 ============ -->
+            <article class="decision-block" id="d6">
+                <div class="decision-block__header">
+                    <div class="decision-block__num">۶</div>
+                    <div>
+                        <div class="decision-block__title">بازشدن فایل‌های مشاوران غیرفعال برای سایر مشاوران در صورت عدم به‌روزرسانی</div>
+                        <div class="decision-block__meta">مدیریت فایل · بهره‌وری</div>
+                    </div>
+                </div>
+                <div class="decision-block__body">
+                    <div class="decision-subtitle">تصمیم جلسه</div>
+                    <p>قرار شد در صورت عدم به‌روزرسانی فایل‌های ملکی یا پیگیری‌های مربوط به مشتریان توسط یک مشاور، فایل‌های آن مشاور برای سایر مشاوران مجموعه باز شود تا آن‌ها بتوانند اطلاعات مربوطه را مشاهده کنند.</p>
+
+                    <div class="decision-subtitle">منطق عملکرد این قابلیت</div>
+                    <p>یکی از مسائل مهم در مدیریت فایل‌های ملکی، نگهداری اطلاعات به‌روز و انجام پیگیری‌های مستمر است. اگر مشاوری فایل‌های خود را به‌روزرسانی نکند یا پیگیری‌های مربوط به آن‌ها را انجام ندهد، ممکن است فرصت‌های معاملاتی از بین بروند و فایل‌های ارزشمند مجموعه بدون استفاده باقی بمانند.</p>
+                    <p>بر اساس تصمیم جلسه، برای جلوگیری از این وضعیت، یک سازوکار نظارتی و دسترسی پویا در سامانه ایجاد خواهد شد.</p>
+
+                    <div class="decision-subtitle">فرآیند موردنظر</div>
+                    <div class="process-steps">
+                        <div class="process-step"><div class="process-step__num">۱</div><div class="process-step__text">فایل‌های ملکی و پیگیری‌های مشتریان در اختیار مشاور مربوطه قرار دارند.</div></div>
+                        <div class="process-step"><div class="process-step__num">۲</div><div class="process-step__text">مشاور مسئول به‌روزرسانی اطلاعات فایل‌ها و ثبت پیگیری‌های خود است.</div></div>
+                        <div class="process-step"><div class="process-step__num">۳</div><div class="process-step__text">در صورت عدم به‌روزرسانی فایل یا پیگیری، شرایط لازم برای بازشدن آن فایل فراهم می‌شود.</div></div>
+                        <div class="process-step"><div class="process-step__num">۴</div><div class="process-step__text">پس از فعال‌شدن این وضعیت، سایر مشاوران مجموعه امکان مشاهده اطلاعات فایل را خواهند داشت.</div></div>
+                        <div class="process-step"><div class="process-step__num">۵</div><div class="process-step__text">به این ترتیب، فایل‌هایی که به دلیل عدم پیگیری یا به‌روزرسانی متوقف شده‌اند، دوباره در چرخه فعالیت مجموعه قرار می‌گیرند.</div></div>
+                    </div>
+
+                    <div class="decision-subtitle">هدف از اجرای این قابلیت</div>
+                    <ul class="styled-list">
+                        <li>جلوگیری از راکد ماندن فایل‌های ملکی</li>
+                        <li>افزایش بهره‌وری از اطلاعات ثبت‌شده در مجموعه</li>
+                        <li>ایجاد انگیزه برای ثبت منظم پیگیری‌ها</li>
+                        <li>افزایش سرعت واکنش مشاوران به فرصت‌های معاملاتی</li>
+                        <li>جلوگیری از وابستگی بیش از اندازه فایل‌ها به یک مشاور</li>
+                        <li>افزایش امکان استفاده سایر مشاوران از ظرفیت فایل‌های موجود</li>
+                    </ul>
+
+                    <div class="strategic-note">
+                        <div class="strategic-note__label">📌 نکته اجرایی</div>
+                        <p>معیار دقیق عدم به‌روزرسانی، بازه زمانی مجاز و شرایط فعال‌شدن دسترسی سایر مشاوران باید مطابق سیاست اجرایی مجموعه پازل تعریف شود. اصل تصمیم جلسه، بازشدن امکان مشاهده فایل برای سایر مشاوران در صورت عدم به‌روزرسانی فایل‌ها یا پیگیری‌هاست.</p>
+                    </div>
+                </div>
+            </article>
+        </section>
+
+        <!-- ============ SUMMARY TABLE ============ -->
+        <section class="section reveal reveal-delay-3">
+            <div class="section__header">
+                <div class="section__icon" style="background:#edf9f1;color:#16a34a;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <h2 class="section__title">جمع‌بندی تصمیمات جلسه</h2>
+            </div>
+            <div class="action-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width:8%;">ردیف</th>
+                            <th style="width:38%;">تصمیم</th>
+                            <th style="width:54%;">خروجی مورد انتظار</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td data-label="ردیف" style="font-weight:700;color:var(--primary);">۱</td>
+                            <td data-label="تصمیم"><strong>تغییر فرم ثبت مشتری و ملک</strong></td>
+                            <td data-label="خروجی">هماهنگی فرم‌های سامانه با دو فرم گوگل مجموعه پازل</td>
+                        </tr>
+                        <tr>
+                            <td data-label="ردیف" style="font-weight:700;color:var(--accent);">۲</td>
+                            <td data-label="تصمیم"><strong>آزمون هوشمند استخدام و ارزیابی</strong></td>
+                            <td data-label="خروجی">آزمون تخصصی، شخصیت‌شناسی، امتیازدهی و مسیر آموزشی اختصاصی</td>
+                        </tr>
+                        <tr>
+                            <td data-label="ردیف" style="font-weight:700;color:var(--purple);">۳</td>
+                            <td data-label="تصمیم"><strong>تولید دو مدل ویدئوی آموزشی</strong></td>
+                            <td data-label="خروجی">آموزش با مدل انسانی و کاراکتر اختصاصی پازل</td>
+                        </tr>
+                        <tr>
+                            <td data-label="ردیف" style="font-weight:700;color:var(--warning);">۴</td>
+                            <td data-label="تصمیم"><strong>کارشناسی در محل ملک</strong></td>
+                            <td data-label="خروجی">ثبت درخواست آنلاین، اعزام کارشناس و ایجاد مسیر توسعه خدمات بازسازی و پیمانکاری</td>
+                        </tr>
+                        <tr>
+                            <td data-label="ردیف" style="font-weight:700;color:var(--pink);">۵</td>
+                            <td data-label="تصمیم"><strong>توسعه Judge Engine</strong></td>
+                            <td data-label="خروجی">داوری هوشمند همکاری‌های مشترک و تعیین درصد سهم مشاوران بر اساس منشور پازل</td>
+                        </tr>
+                        <tr>
+                            <td data-label="ردیف" style="font-weight:700;color:var(--dark-secondary);">۶</td>
+                            <td data-label="تصمیم"><strong>بازشدن فایل‌های به‌روزرسانی‌نشده</strong></td>
+                            <td data-label="خروجی">فعال‌شدن امکان مشاهده فایل برای سایر مشاوران در صورت عدم پیگیری یا به‌روزرسانی</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ============ THREE TRACKS ============ -->
+        <section class="section reveal reveal-delay-3">
+            <div class="section__header">
+                <div class="section__icon" style="background:#f5f0ff;color:#7c3aed;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 22 8.5 12 15 2 8.5 12 2"/><polyline points="2 15.5 12 22 22 15.5"/><polyline points="2 11.5 12 18 22 11.5"/></svg>
+                </div>
+                <h2 class="section__title">جمع‌بندی نهایی — سه مسیر اصلی توسعه پازل</h2>
+            </div>
+            <div class="summary-card">
+                <p>تصمیمات این جلسه را می‌توان در سه مسیر اصلی توسعه پازل دسته‌بندی کرد:</p>
+            </div>
+            <div class="tracks-grid">
+                <div class="track-card">
+                    <span class="track-card__icon">⚙️</span>
+                    <div class="track-card__title">۱. استانداردسازی و توسعه فرآیندهای داخلی</div>
+                    <div class="track-card__desc">تطبیق فرم‌های ثبت مشتری و ملک با ساختار اختصاصی مجموعه و ایجاد سازوکار مدیریت و به‌روزرسانی فایل‌های مشاوران.</div>
+                </div>
+                <div class="track-card">
+                    <span class="track-card__icon">🧠</span>
+                    <div class="track-card__title">۲. توسعه هسته هوش مصنوعی و منابع انسانی</div>
+                    <div class="track-card__desc">طراحی آزمون هوشمند استخدام و ارزیابی مشاوران، ایجاد مسیر آموزشی اختصاصی و توسعه موتور قضاوت بر اساس منشور پازل.</div>
+                </div>
+                <div class="track-card">
+                    <span class="track-card__icon">🚀</span>
+                    <div class="track-card__title">۳. توسعه خدمات جدید و ایجاد فرصت‌های کسب‌وکار</div>
+                    <div class="track-card__desc">راه‌اندازی خدمت کارشناسی در محل ملک با هدف تبدیل آن به یکی از خدمات شاخص پازل و ایجاد زمینه ورود به حوزه بازسازی و پیمانکاری ساختمان در آینده.</div>
+                </div>
+            </div>
+            <div class="summary-card" style="margin-top:16px;">
+                <p>در مجموع، این شش تصمیم بخشی از مسیر تبدیل پازل به یک مجموعه املاک با <strong>فرآیندهای استاندارد، آموزش اختصاصی، مدیریت هوشمند همکاری‌ها و خدمات قابل توسعه در زنجیره ارزش صنعت ساختمان</strong> هستند.</p>
+            </div>
+        </section>
+
+        <!-- ============ ACTION ITEMS ============ -->
+        <section class="section reveal reveal-delay-3">
+            <div class="section__header">
+                <div class="section__icon" style="background:#fffbea;color:#f59e0b;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><polyline points="9 12 11 14 15 10"/></svg>
+                </div>
+                <h2 class="section__title">اقدامات و گام‌های بعدی (Action Items)</h2>
+            </div>
+            <div class="action-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width:40%;">اقدام</th>
+                            <th style="width:20%;">مسئول</th>
+                            <th style="width:20%;">وضعیت</th>
+                            <th style="width:20%;">مرتبط با تصمیم</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td data-label="اقدام">دریافت فرم‌های گوگل ثبت مشتری و ثبت ملک از مجموعه پازل</td>
+                            <td data-label="مسئول" class="responsible responsible-client">کارفرما (پازل)</td>
+                            <td data-label="وضعیت"><span class="status-tag status-tag--pending">در انتظار</span></td>
+                            <td data-label="تصمیم">تصمیم ۱</td>
+                        </tr>
+                        <tr>
+                            <td data-label="اقدام">بازطراحی فرم‌های سامانه بر اساس فرم‌های دریافتی</td>
+                            <td data-label="مسئول" class="responsible responsible-company">Code Packs</td>
+                            <td data-label="وضعیت"><span class="status-tag status-tag--pending">در انتظار</span></td>
+                            <td data-label="تصمیم">تصمیم ۱</td>
+                        </tr>
+                        <tr>
+                            <td data-label="اقدام">هماهنگی با مهندس مجموعه برای طراحی آزمون تخصصی</td>
+                            <td data-label="مسئول" class="responsible responsible-client">Code Packs + پازل</td>
+                            <td data-label="وضعیت"><span class="status-tag status-tag--pending">در انتظار</span></td>
+                            <td data-label="تصمیم">تصمیم ۲</td>
+                        </tr>
+                        <tr>
+                            <td data-label="اقدام">شناسایی و جمع‌آوری منابع آموزشی معتبر</td>
+                            <td data-label="مسئول" class="responsible responsible-company">Code Packs</td>
+                            <td data-label="وضعیت"><span class="status-tag status-tag--pending">در انتظار</span></td>
+                            <td data-label="تصمیم">تصمیم ۲</td>
+                        </tr>
+                        <tr>
+                            <td data-label="اقدام">تعریف منشور اختصاصی پازل برای Judge Engine</td>
+                            <td data-label="مسئول" class="responsible responsible-client">کارفرما (پازل)</td>
+                            <td data-label="وضعیت"><span class="status-tag status-tag--pending">در انتظار</span></td>
+                            <td data-label="تصمیم">تصمیم ۵</td>
+                        </tr>
+                        <tr>
+                            <td data-label="اقدام">تعریف معیار دقیق عدم به‌روزرسانی و بازه زمانی مجاز</td>
+                            <td data-label="مسئول" class="responsible responsible-client">کارفرما (پازل)</td>
+                            <td data-label="وضعیت"><span class="status-tag status-tag--pending">در انتظار</span></td>
+                            <td data-label="تصمیم">تصمیم ۶</td>
+                        </tr>
+                        <tr>
+                            <td data-label="اقدام">طراحی و پیاده‌سازی بخش کارشناسی در محل ملک</td>
+                            <td data-label="مسئول" class="responsible responsible-company">Code Packs</td>
+                            <td data-label="وضعیت"><span class="status-tag status-tag--pending">در انتظار</span></td>
+                            <td data-label="تصمیم">تصمیم ۴</td>
+                        </tr>
+                        <tr>
+                            <td data-label="اقدام">تولید ویدئوهای آموزشی با دو هویت بصری</td>
+                            <td data-label="مسئول" class="responsible responsible-company">Code Packs</td>
+                            <td data-label="وضعیت"><span class="status-tag status-tag--pending">در انتظار</span></td>
+                            <td data-label="تصمیم">تصمیم ۳</td>
+                        </tr>
+                        <tr>
+                            <td data-label="اقدام">برنامه‌ریزی جلسه بعدی برای بررسی پیشرفت و جزئیات اجرایی</td>
+                            <td data-label="مسئول" class="responsible responsible-client">پازل + Code Packs</td>
+                            <td data-label="وضعیت"><span class="status-tag status-tag--pending">در انتظار</span></td>
+                            <td data-label="تصمیم">همه</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ============ FINAL NOTE ============ -->
+        <section class="section reveal reveal-delay-3">
+            <div class="section__header">
+                <div class="section__icon" style="background:#f0f9f8;color:#14b8a6;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21c3 0 7-2 7-7V5H3v9h4c0 4-4 7-4 7z"/><path d="M17 21c3 0 7-2 7-7v-7h-8v9h4c0 4-4 7-4 7z"/></svg>
+                </div>
+                <h2 class="section__title">یادداشت پایانی</h2>
+            </div>
+            <div class="summary-card">
+                <p>این گزارش، صورت‌بندی تصمیمات مطرح‌شده در جلسه است و <strong>جزئیات اجرایی تکمیلی که هنوز درباره آن‌ها توافق نشده، به‌عنوان تصمیم قطعی تلقی نمی‌شوند.</strong></p>
+                <p>تصمیمات این جلسه، مسیر توسعه پلتفرم هوشمند املاک پازل را در سه محور اصلی استانداردسازی، هوشمندسازی و توسعه خدمات جدید ترسیم می‌کند. تیم Code Packs آماده است تا با همکاری نزدیک با مجموعه پازل، گام‌های اجرایی این تصمیمات را به‌صورت مرحله‌به‌مرحله پیش ببرد.</p>
+            </div>
+        </section>
+
+        <!-- ============ FOOTER ============ -->
+        <footer class="footer reveal reveal-delay-3">
+            <p>
+                <span class="footer__brand">Prepared by Code Packs</span>
+                <br>
+                Digital Solutions Company
+                <br>
+                <span style="font-size:0.7rem;color:#94a3b8;">گزارش تصمیمات جلسه توسعه پلتفرم هوشمند املاک پازل — چهارشنبه ۶ آبان ۱۴۰۵</span>
+            </p>
+        </footer>
+
+    </main>
+
+    <!-- ==================== BACK TO TOP ==================== -->
+    <button class="back-to-top" id="backToTop" aria-label="بازگشت به بالا">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/>
+        </svg>
+    </button>
+
+    <!-- ==================== SCRIPT ==================== -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ===== Reveal on scroll =====
+            const revealElements = document.querySelectorAll('.reveal');
+            if (revealElements.length > 0 && 'IntersectionObserver' in window) {
+                const observer = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('reveal--visible');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { root: null, rootMargin: '0px 0px -40px 0px', threshold: 0.06 });
+                revealElements.forEach(function(el) { observer.observe(el); });
+            } else {
+                revealElements.forEach(function(el) { el.classList.add('reveal--visible'); });
+            }
+
+            // ===== Scroll Progress + Back to Top =====
+            const progressBar = document.getElementById('scrollProgress');
+            const backToTop = document.getElementById('backToTop');
+            let ticking = false;
+
+            function updateScroll() {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+
+                if (progressBar) progressBar.style.width = progress + '%';
+
+                if (backToTop) {
+                    if (scrollTop > 400) {
+                        backToTop.classList.add('visible');
+                    } else {
+                        backToTop.classList.remove('visible');
+                    }
+                }
+                ticking = false;
+            }
+
+            window.addEventListener('scroll', function() {
+                if (!ticking) {
+                    window.requestAnimationFrame(updateScroll);
+                    ticking = true;
+                }
+            }, { passive: true });
+
+            if (backToTop) {
+                backToTop.addEventListener('click', function() {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+
+            updateScroll();
+
+            console.log('📋 گزارش تصمیمات جلسه توسعه پلتفرم هوشمند املاک پازل | Code Packs');
+        })();
+    </script>
+
+</body>
+</html>
